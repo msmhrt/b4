@@ -21,7 +21,7 @@ function showItem(id){
 (function(){
  
 	u = document.location.href 
-	matches = u.match(/https?:\/\/twitter.com\/(.{3,15})\/status(es)?\/([0-9]{3,20})/i);
+	matches = u.match(/https?:\/\/twitter.com\/(#\!\/)?(.{3,15})\/status(es)?\/([0-9]{3,20})/i);
 	
 	if(!matches)
 	{
@@ -67,7 +67,7 @@ function showItem(id){
 	}
 	else
 	{
-		publitweet_blackbird_getCode(matches[3]);
+		publitweet_blackbird_getCode(matches[4]);
 	
 		//  http://api.twitter.com/1/statuses/show/'..'.json'
 	}
