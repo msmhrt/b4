@@ -188,5 +188,5 @@ function relative_time(time_value) {
 	var delta = parsed_date / 1000 - relative_to.getTimezoneOffset() * 60;
 	var dd = new Date();
 	dd.setTime(delta * 1000);
-	return dd.getFullYear()+'年'+(dd.getMonth()+1)+'月'+dd.getDate()+'日 '+dd.getHours()+':'+dd.getMinutes();
+	return dd.getFullYear()+'年'+(dd.getMonth()+1)+'月'+dd.getDate()+'日 '+dd.getHours()+':'+("0"+dd.getMinutes()).slice(-2);
 }
