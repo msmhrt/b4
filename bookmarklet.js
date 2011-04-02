@@ -21,7 +21,7 @@ function showItem(id){
 (function(){
  
 	u = document.location.href 
-	matches = u.match(/https?:\/\/twitter.com\/(#\!\/)?(.{3,15})\/status(es)?\/([0-9]{3,20})/i);
+	matches = u.match(/https?:\/\/twitter.com\/(#\!\/)?(.{1,15})\/status(es)?\/([0-9]{3,20})/i);
 	
 	if(!matches)
 	{
