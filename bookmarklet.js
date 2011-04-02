@@ -155,7 +155,7 @@ function publitweet_track(tweet_id)
 
 function publitweet_blackbird(tweet)
 {
-	tweet_id				= tweet.id;
+	tweet_id				= tweet.id_str;
 	screen_name 			= tweet.user.screen_name;
 	name		 			= tweet.user.name;
 	background_url			= tweet.user.profile_background_image_url;
