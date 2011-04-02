@@ -21,7 +21,7 @@ function showItem(id){
 (function(){
  
 	u = document.location.href 
-	matches = u.match(/https?:\/\/twitter.com\/(.{1,15})\/status(es)?\/([0-9]{3,20})/i);
+	matches = u.match(/https?:\/\/twitter.com\/(.{3,15})\/status(es)?\/([0-9]{3,20})/i);
 	
 	if(!matches)
 	{
@@ -161,7 +161,9 @@ function publitweet_blackbird(tweet)
 	background_url			= tweet.user.profile_background_image_url;
 	avatar					= tweet.user.profile_image_url;
 	source					= tweet.source;
-	timestamp				= tweet.created_at.substr(0,tweet.created_at.indexOf('+'));
+//	timestamp				= tweet.created_at.substr(0,tweet.created_at.indexOf('+'));
+	timestamp				= relative_time(tweet.created_at);
+
 	content					= tweet.text.replace(/(http:\/\/\S+)/g, "<a href='$1' target='_new'>$1</a>");	
 	profile_background_color= '#'+tweet.user.profile_background_color;
 	content 				= content.replace(/#([a-z0-9]*)/ig,'<a href="http://search.twitter.com/search?q=%23$1" target="_new">#$1</a>');
@@ -175,4 +177,16 @@ function publitweet_blackbird(tweet)
 	e.val(EmbedCode);
 	e.focus();
 	e.select();
+}
+
+
+function relative_time(time_value) {
+	time_values = time_value.split(" ");
+	time_value = time_values[1]+" "+time_values[2]+", "+time_values[5]+" "+time_values[3];
+	var parsed_date = Date.parse(time_value);
+	var relative_to = (arguments.length > 1) ? arguments[1] : new Date();
+	var delta = parsed_date / 1000 - relative_to.getTimezoneOffset() * 60;
+	var dd = new Date();
+	dd.setTime(delta * 1000);
+	return dd.getFullYear()+'年'+(dd.getMonth()+1)+'月'+dd.getDate()+'日 '+dd.getHours()+':'+dd.getMinutes();
 }
