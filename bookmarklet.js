@@ -166,7 +166,7 @@ function publitweet_blackbird(tweet)
 
 	content					= tweet.text.replace(/(http:\/\/\S+)/g, "<a href='$1' target='_new'>$1</a>");	
 	profile_background_color= '#'+tweet.user.profile_background_color;
-	content 				= content.replace(/#([a-z0-9_]*)/ig,'<a href="http://search.twitter.com/search?q=%23$1" target="_new">#$1</a>');
+	content 				= content.replace(/#([a-z0-9_]+)/ig,'<a href="http://search.twitter.com/search?q=%23$1" target="_new">#$1</a>');
 	content 				= content.replace(/@([a-z0-9_-]{1,15})/ig,'<a href="http://twitter.com/$1" target="_new">@$1</a>');
 	
 	EmbedCode = '<'+"!-- http://twitter.com/"+screen_name+"/status/"+tweet_id+" --> ";
