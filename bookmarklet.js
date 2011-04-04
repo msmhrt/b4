@@ -12,20 +12,18 @@ function showItem(id) {
         if (item) {
             item.style.display = "";
         }
-    } catch (e) {
-
-    }
+    } catch (e) {}
 }
 
 (function () {
-
     u = document.location.href
     matches = u.match(/https?:\/\/twitter.com\/(#\!\/)?(.{1,15})\/status(es)?\/([0-9]{3,20})/i);
 
     if (!matches) {
         m2 = u.match(/^https?:\/\/twitter.com(\/.*)?/i);
-        if (!m2) alert('You have to be on a twitter.com page to execute this bookmarklet');
-        else {
+        if (!m2) {
+            alert('You have to be on a twitter.com page to execute this bookmarklet');
+        } else {
             console.info('Starting publitweet');
             if (jQuery('.publitweet_blackbird_getEmbed').size() == 0) {
                 var inArray = function (str, array) {
@@ -58,8 +56,6 @@ function showItem(id) {
         }
     } else {
         publitweet_blackbird_getCode(matches[4]);
-
-        //  http://api.twitter.com/1/statuses/show/'..'.json'
     }
 })();
 
@@ -89,9 +85,6 @@ function publitweet_writeInterface() {
     str += "<textarea id='EmbedCode' style='margin:10px 0px;";
     str += "background:none repeat scroll 0 0 #FAFAFC;border:1px solid #A3A3A3;color:#2F2F2F;font:10px/15px Monaco,monospace;height:240px;outline:medium none;overflow:hidden;padding:9px 0px;width:430px;";
     str += "'>Loading..</textarea>";
-
-    //  str += "<iframe frameborder='0' scrolling='no' name='publitweet_bookmarklet_iframe' id='publitweet_bookmarklet_iframe' src='" + iframe_url + "' width='"+(publitweet_iframe_width-30)+"px' height='"+(publitweet_iframe_height-5)+"px' style='textalign:right; backgroundColor: white;'></iframe>";
-    //	  str += "</td><td onClick='' style='background: black;' title='click to close window' valign='top' align='center' width='30px'>";
     str += "<center><a href='javascript:publitweet_blackbird_close();' style='width:100%; text-align: middle; color: #393939; font-family: Arial;'><b>[close (^esc)]</b></a></center>";
     str += "</div></div>";
 
@@ -99,14 +92,13 @@ function publitweet_writeInterface() {
     jQuery(document).keyup(function (e) {
         if (e.keyCode == 27) {
             publitweet_blackbird_close();
-        } // esc   (does not work)
+        } // esc (does not work)
     });
 
     jQuery('#EmbedCode').focus(function () {
         jQuery(this).select();
     });
 
-    //	  div.onkeypress = keyPressHandler;
     document.body.insertBefore(div, document.body.firstChild);
 }
 
@@ -120,25 +112,7 @@ function publitweet_blackbird_getCode(tweet_id) {
     _my_script.type = 'text/javascript';
     _my_script.src = api_call;
     document.getElementsByTagName('head')[0].appendChild(_my_script);
-
-    //	publitweet_track(tweet_id);
 }
-
-function publitweet_track(tweet_id) {
-    screen_name = '';
-    href = $('a[id="profile_link"]').attr('href');
-    if (href) screen_name = href.substr(href.lastIndexOf('/') + 1)
-
-    api_call = 'http://publitweet.com/blackbird/track.php?tweet_id=' + tweet_id + '&screen_name=' + screen_name;
-
-    _my_script = document.createElement('SCRIPT');
-    _my_script.type = 'text/javascript';
-    _my_script.src = api_call;
-    document.getElementsByTagName('head')[0].appendChild(_my_script);
-
-}
-
-
 
 function publitweet_blackbird(tweet) {
     tweet_id = tweet.id_str;
@@ -147,24 +121,21 @@ function publitweet_blackbird(tweet) {
     background_url = tweet.user.profile_background_image_url;
     avatar = tweet.user.profile_image_url;
     source = tweet.source;
-    //	timestamp				= tweet.created_at.substr(0,tweet.created_at.indexOf('+'));
     timestamp = relative_time(tweet.created_at);
-
     content = tweet.text.replace(/(http:\/\/\S+)/g, "<a href='$1' target='_new'>$1</a>");
     profile_background_color = '#' + tweet.user.profile_background_color;
     content = content.replace(/#([a-z0-9_]+)/ig, '<a href="http://search.twitter.com/search?q=%23$1" target="_new">#$1</a>');
     content = content.replace(/@([a-z0-9_-]{1,15})/ig, '<a href="http://twitter.com/$1" target="_new">@$1</a>');
 
-    EmbedCode = '<' + "!-- http://twitter.com/" + screen_name + "/status/" + tweet_id + " --> ";
-    EmbedCode += '<' + "style type='text/css'>.bbpBox{background:url(" + background_url + ") " + profile_background_color + ";padding:20px;}" + '<' + "/style>";
-    EmbedCode += '<' + "div id='tweet_" + tweet_id + "' class='bbpBox' style='background:url(" + background_url + ") " + profile_background_color + ";padding:20px;'>" + '<' + "p class='bbpTweet' style='background:#fff;padding:10px 12px 10px 12px;margin:0;min-height:48px;color:#000;font-size:16px !important;line-height:22px;-moz-border-radius:5px;-webkit-border-radius:5px;'>" + content + " " + '<' + "span class='timestamp' style='font-size:12px;display:block;'>" + '<' + "a title='" + timestamp + "' href='http://twitter.com/" + screen_name + "/status/" + tweet_id + "'>" + timestamp + "" + '<' + "/a> via " + source + " " + '<' + "/span>" + '<' + "span class='metadata' style='display:block;width:100%;clear:both;margin-top:8px;padding-top:12px;height:40px;border-top:1px solid #fff;border-top:1px solid #e6e6e6;'>" + '<' + "span class='author' style='line-height:19px;'>" + '<' + "a href='http://twitter.com/" + screen_name + "'>" + '<' + "img src='" + avatar + "' style='float:left;margin:0 7px 0 0px;width:38px;height:38px;' />" + '<' + "/a>" + '<' + "strong>" + '<' + "a href='http://twitter.com/" + screen_name + "'>" + name + "" + '<' + "/a>" + '<' + "/strong>" + '<' + "br/>@" + screen_name + "" + '<' + "/span>" + '<' + "/span>" + '<' + "/p>" + '<' + "/div> " + '<' + "!-- end of tweet -->";
+    EmbedCode = "<!-- http://twitter.com/" + screen_name + "/status/" + tweet_id + " --> ";
+    EmbedCode += "<style type='text/css'>.bbpBox{background:url(" + background_url + ") " + profile_background_color + ";padding:20px;}</style>";
+    EmbedCode += "<div id='tweet_" + tweet_id + "' class='bbpBox' style='background:url(" + background_url + ") " + profile_background_color + ";padding:20px;'><p class='bbpTweet' style='background:#fff;padding:10px 12px 10px 12px;margin:0;min-height:48px;color:#000;font-size:16px !important;line-height:22px;-moz-border-radius:5px;-webkit-border-radius:5px;'>" + content + " <span class='timestamp' style='font-size:12px;display:block;'><a title='" + timestamp + "' href='http://twitter.com/" + screen_name + "/status/" + tweet_id + "'>" + timestamp + "</a> via " + source + " </span><span class='metadata' style='display:block;width:100%;clear:both;margin-top:8px;padding-top:12px;height:40px;border-top:1px solid #fff;border-top:1px solid #e6e6e6;'><span class='author' style='line-height:19px;'><a href='http://twitter.com/" + screen_name + "'><img src='" + avatar + "' style='float:left;margin:0 7px 0 0px;width:38px;height:38px;' /></a><strong><a href='http://twitter.com/" + screen_name + "'>" + name + "</a></strong><br/>@" + screen_name + "</span></span></p></div> <!-- end of tweet -->";
 
     e = jQuery('#EmbedCode');
     e.val(EmbedCode);
     e.focus();
     e.select();
 }
-
 
 function relative_time(time_value) {
     time_values = time_value.split(" ");
