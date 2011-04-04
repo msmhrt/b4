@@ -132,7 +132,7 @@ function publitweet_blackbird_getCode(tweet_id)
 	_my_script.src=api_call;
 	document.getElementsByTagName('head')[0].appendChild(_my_script);
 	
-	publitweet_track(tweet_id);
+//	publitweet_track(tweet_id);
 }
 
 function publitweet_track(tweet_id)
