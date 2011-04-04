@@ -17,10 +17,10 @@ function showItem(id) {
 
 (function () {
     u = document.location.href
-    matches = u.match(/https?:\/\/twitter.com\/(#\!\/)?(.{1,15})\/status(es)?\/([0-9]{3,20})/i);
+    matches = u.match(/^https?:\/\/twitter\.com\/(#\!\/)?([a-z0-9_]{1,15})\/status(es)?\/([1-9][0-9]+)/i);
 
     if (!matches) {
-        m2 = u.match(/^https?:\/\/twitter.com(\/.*)?/i);
+        m2 = u.match(/^https?:\/\/twitter\.com\/(.*)?/i);
         if (!m2) {
             alert('You have to be on a twitter.com page to execute this bookmarklet');
         } else {
@@ -37,11 +37,11 @@ function showItem(id) {
                 jQuery('.stream-tweet, .permalink-tweet').live('hover', function () {
                     var node = jQuery(this).find('.tweet-actions');
                     if (node) {
-                        var permalink = node.siblings('.tweet-timestamp').attr('href').replace('/#!', 'http://twitter.com');
+                        var permalink = node.siblings('.tweet-timestamp').attr('href').replace('^/#!', 'http://twitter.com');
                         var tweetClass = ($(this).hasClass('permalink-tweet')) ? 'permalink' : 'stream';
                         if (inArray(tweetClass + ':' + permalink, permalink_memory)) return;
 
-                        var m3 = permalink.match(/https?:\/\/twitter.com\/(.{1,15})\/status(es)?\/([0-9]{3,20})/i);
+                        var m3 = permalink.match(/^https?:\/\/twitter\.com\/([a-z0-9_]{1,15})\/status(es)?\/([1-9][0-9]+)/i);
                         var id = m3[3];
                         permalink_memory.push(tweetClass + ':' + permalink);
                         console.info('publitweet_blackbird_ id: ' + id);
@@ -125,7 +125,7 @@ function publitweet_blackbird(tweet) {
     content = tweet.text.replace(/(http:\/\/\S+)/g, "<a href='$1' target='_new'>$1</a>");
     profile_background_color = '#' + tweet.user.profile_background_color;
     content = content.replace(/#([a-z0-9_]+)/ig, '<a href="http://search.twitter.com/search?q=%23$1" target="_new">#$1</a>');
-    content = content.replace(/@([a-z0-9_-]{1,15})/ig, '<a href="http://twitter.com/$1" target="_new">@$1</a>');
+    content = content.replace(/@([a-z0-9_]{1,15})/ig, '<a href="http://twitter.com/$1" target="_new">@$1</a>');
 
     EmbedCode = "<!-- http://twitter.com/" + screen_name + "/status/" + tweet_id + " --> ";
     EmbedCode += "<style type='text/css'>.bbpBox{background:url(" + background_url + ") " + profile_background_color + ";padding:20px;}</style>";
