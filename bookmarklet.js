@@ -118,11 +118,15 @@ function publitweet_blackbird(tweet) {
     tweet_id = tweet.id_str;
     screen_name = tweet.user.screen_name;
     name = tweet.user.name;
+    user_id = tweet.user.id_str;
     background_url = tweet.user.profile_background_image_url;
     avatar = tweet.user.profile_image_url;
     source = tweet.source;
+    background_color = '#' + tweet.user.profile_background_color;
+    text_color = '#' + tweet.user.profile_text_color;
+    link_color = '#' + tweet.user.profile_link_color;
+
     timestamp = relative_time(tweet.created_at);
-    profile_background_color = '#' + tweet.user.profile_background_color;
 
     to_link = function() {
         var a = arguments;
@@ -145,8 +149,8 @@ function publitweet_blackbird(tweet) {
     content = tweet.text.replace(/(http:\/\/\S+)|#([a-zA-Z0-9_]+)|@([a-zA-Z0-9_]{1,15})/g, to_link);
 
     EmbedCode = "<!-- http://twitter.com/" + screen_name + "/status/" + tweet_id + " --> ";
-    EmbedCode += "<style type='text/css'>.bbpBox{background:url(" + background_url + ") " + profile_background_color + ";padding:20px;}</style>";
-    EmbedCode += "<div id='tweet_" + tweet_id + "' class='bbpBox' style='background:url(" + background_url + ") " + profile_background_color + ";padding:20px;'><p class='bbpTweet' style='background:#fff;padding:10px 12px 10px 12px;margin:0;min-height:48px;color:#000;font-size:16px !important;line-height:22px;-moz-border-radius:5px;-webkit-border-radius:5px;'>" + content + " <span class='timestamp' style='font-size:12px;display:block;'><a title='" + timestamp + "' href='http://twitter.com/" + screen_name + "/status/" + tweet_id + "'>" + timestamp + "</a> via " + source + " </span><span class='metadata' style='display:block;width:100%;clear:both;margin-top:8px;padding-top:12px;height:40px;border-top:1px solid #fff;border-top:1px solid #e6e6e6;'><span class='author' style='line-height:19px;'><a href='http://twitter.com/" + screen_name + "'><img src='" + avatar + "' style='float:left;margin:0 7px 0 0px;width:38px;height:38px;' /></a><strong><a href='http://twitter.com/" + screen_name + "'>" + name + "</a></strong><br/>@" + screen_name + "</span></span></p></div> <!-- end of tweet -->";
+    EmbedCode = "<style type='text/css'>.bbbb_uid" + user_id + " a {text-decoration:none;color:" + link_color + " !important;} .bbbb_uid" + user_id + " a:hover {text-decoration:underline;}</style>";
+    EmbedCode += "<div id='tweet_" + tweet_id + "' class='bbbb_uid" + user_id + "' style='background:url(" + background_url + ") " + background_color + ";padding:20px;'><p class='bbpTweet' style='background:#fff;padding:10px 12px 10px 12px;margin:0;min-height:48px;color:" + text_color + ";font-size:16px !important;line-height:22px;-moz-border-radius:5px;-webkit-border-radius:5px;'>" + content + " <span class='timestamp' style='font-size:12px;display:block;'><a title='" + timestamp + "' href='http://twitter.com/" + screen_name + "/status/" + tweet_id + "'>" + timestamp + "</a> via " + source + " </span><span class='metadata' style='display:block;width:100%;clear:both;margin-top:8px;padding-top:12px;height:40px;border-top:1px solid #fff;border-top:1px solid #e6e6e6;'><span class='author' style='line-height:19px;'><a href='http://twitter.com/" + screen_name + "'><img src='" + avatar + "' style='float:left;margin:0 7px 0 0px;width:38px;height:38px;' /></a><strong><a href='http://twitter.com/" + screen_name + "'>" + name + "</a></strong><br/>@" + screen_name + "</span></span></p></div> <!-- end of tweet -->";
 
     e = jQuery('#EmbedCode');
     e.val(EmbedCode);
