@@ -122,10 +122,27 @@ function publitweet_blackbird(tweet) {
     avatar = tweet.user.profile_image_url;
     source = tweet.source;
     timestamp = relative_time(tweet.created_at);
-    content = tweet.text.replace(/(http:\/\/\S+)/g, "<a href='$1' target='_new'>$1</a>");
     profile_background_color = '#' + tweet.user.profile_background_color;
-    content = content.replace(/#([a-z0-9_]+)/ig, '<a href="http://search.twitter.com/search?q=%23$1" target="_new">#$1</a>');
-    content = content.replace(/@([a-z0-9_]{1,15})/ig, '<a href="http://twitter.com/$1" target="_new">@$1</a>');
+
+    to_link = function() {
+        var a = arguments;
+        var pre_text = '';
+        if (a[1]) {
+            url = a[1];
+            text = a[1];
+        } else if (a[2]) {
+            url = 'http://search.twitter.com/search?q=%23' + a[2];
+            text = '#' + a[2];
+        } else if (a[3]) {
+            url = 'http://twitter.com/' + a[3];
+            pre_text = '@';
+            text = a[3];
+        }
+
+        return pre_text + '<a href="' + url + '" target="_new">' + text + '</a>';
+    }
+
+    content = tweet.text.replace(/(http:\/\/\S+)|#([a-zA-Z0-9_]+)|@([a-zA-Z0-9_]{1,15})/g, to_link);
 
     EmbedCode = "<!-- http://twitter.com/" + screen_name + "/status/" + tweet_id + " --> ";
     EmbedCode += "<style type='text/css'>.bbpBox{background:url(" + background_url + ") " + profile_background_color + ";padding:20px;}</style>";
