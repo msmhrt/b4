@@ -121,19 +121,42 @@ function publitweet_blackbird(tweet) {
     background_url = tweet.user.profile_background_image_url;
     avatar = tweet.user.profile_image_url;
     source = tweet.source;
+    background_color = '#' + tweet.user.profile_background_color;
+    text_color = '#' + tweet.user.profile_text_color;
+    link_color = '#' + tweet.user.profile_link_color;
+
     timestamp = relative_time(tweet.created_at);
-    profile_background_color = '#' + tweet.user.profile_background_color;
 
     // for the Placemark description of Google Maps
-    content = tweet.text.replace(/(http:\/\/\S+)/g, '<a href="$1">$1</a>');
-    content = content.replace(/#([a-z0-9_]+)/ig, '<a href="http://search.twitter.com/search?q=%23$1">#$1</a>');
-    content = content.replace(/@([a-z0-9_]{1,15})/ig, '<a href="http://twitter.com/$1">@$1</a>');
+    link_style = ' style="color:' + link_color + '"';
 
-    if (source === 'web') {
-        source = '<a href="http://twitter.com/">Twitter</a>';
+    to_link = function() {
+        var a = arguments;
+        var pre_text = '';
+        if (a[1]) {
+            url = a[1];
+            text = a[1];
+        } else if (a[2]) {
+            url = 'http://search.twitter.com/search?q=%23' + a[2];
+            text = '#' + a[2];
+        } else if (a[3]) {
+            url = 'http://twitter.com/' + a[3];
+            pre_text = '@'
+            text = a[3];
+        }
+
+        return pre_text + '<a href="' + url + '"' + link_style + '>' + text + '</a>';
     }
 
-    EmbedCode = '<div style="margin:0 .5em .3em .5em;min-height:60px;color:#333;font-size:16px"><div>' + content + '</div><div style="margin-bottom:.5em"><span style="font-size:12px;display:block"><a href="http://twitter.com/' + screen_name + '/status/' + tweet_id + '">' + timestamp + '</a> ' + source + 'から </span></div><div style="padding:.5em 0 .5em 0;width:100%;border-top:1px solid #e6e6e6"><a href="http://twitter.com/' + screen_name + '"><img src="' + avatar + '" alt="' + name + '" width="38" height="38" style="float:left;margin-right:7px;width:38px;padding:0;border:none"></a><strong><a href="http://twitter.com/' + screen_name + '">@' + screen_name + '</a></strong><span style="color:#999;font-size:14px"><br>' + name + ' </span></div></div>'
+    content = tweet.text.replace(/(http:\/\/\S+)|#([a-zA-Z0-9_]+)|@([a-zA-Z0-9_]{1,15})/g, to_link);
+
+    if (source === 'web') {
+        source = '<a href="http://twitter.com/"' + link_style + ' rel="nofollow">Twitter</a>';
+    } else {
+        source = source.replace(/^<a href="([^"]+)" rel="nofollow">/, '<a href="$1"' + link_style + ' rel="nofollow">');
+    }
+
+    EmbedCode = '<div style="margin:0 .5em .3em .5em;min-height:60px;color:' + text_color + ';font-size:16px"><div>' + content + '</div><div style="margin-bottom:.5em"><span style="font-size:12px;display:block;color:#999"><a href="http://twitter.com/' + screen_name + '/status/' + tweet_id + '"' + link_style + '>' + timestamp + '</a> ' + source + 'から </span></div><div style="padding:.5em 0 .5em 0;width:100%;border-top:1px solid #e6e6e6"><a href="http://twitter.com/' + screen_name + '"' + link_style + '><img src="' + avatar + '" alt="' + name + '" width="38" height="38" style="float:left;margin-right:7px;width:38px;padding:0;border:none"></a><strong><a href="http://twitter.com/' + screen_name + '"' + link_style + '>@' + screen_name + '</a></strong><span style="color:#999;font-size:14px"><br>' + name + ' </span></div></div>'
 
     e = jQuery('#EmbedCode');
     e.val(EmbedCode);
