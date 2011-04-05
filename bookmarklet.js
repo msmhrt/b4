@@ -15,7 +15,7 @@ function showItem(id) {
     } catch (e) {}
 }
 
-(function () {
+(function() {
     u = document.location.href
     matches = u.match(/^https?:\/\/twitter\.com\/(#\!\/)?([a-z0-9_]{1,15})\/status(es)?\/([1-9][0-9]+)/i);
 
@@ -26,7 +26,7 @@ function showItem(id) {
         } else {
             console.info('Starting publitweet');
             if (jQuery('.publitweet_blackbird_getEmbed').size() == 0) {
-                var inArray = function (str, array) {
+                var inArray = function(str, array) {
                     for (var i = 0, len = array.length; i < len; i++) {
                         if (array[i] == str) return true;
                     };
@@ -34,7 +34,7 @@ function showItem(id) {
                 }
 
                 var permalink_memory = [];
-                jQuery('.stream-tweet, .permalink-tweet').live('hover', function () {
+                jQuery('.stream-tweet, .permalink-tweet').live('hover', function() {
                     var node = jQuery(this).find('.tweet-actions');
                     if (node) {
                         var permalink = node.siblings('.tweet-timestamp').attr('href').replace('^/#!', 'http://twitter.com');
@@ -47,7 +47,7 @@ function showItem(id) {
                         console.info('publitweet_blackbird_ id: ' + id);
                         var anchor = jQuery('&nbsp; <a class="publitweet_blackbird_getEmbed" href="javascript:void();" style="display:inline-table;height:16px;padding-left:18px;">[embed tweet]</a>');
                         node.append(anchor);
-                        anchor.click(function () {
+                        anchor.click(function() {
                             publitweet_blackbird_getCode(id);
                         });
                     }
@@ -89,13 +89,13 @@ function publitweet_writeInterface() {
     str += "</div></div>";
 
     div.innerHTML = str;
-    jQuery(document).keyup(function (e) {
+    jQuery(document).keyup(function(e) {
         if (e.keyCode == 27) {
             publitweet_blackbird_close();
         } // esc (does not work)
     });
 
-    jQuery('#EmbedCode').focus(function () {
+    jQuery('#EmbedCode').focus(function() {
         jQuery(this).select();
     });
 
