@@ -37,7 +37,7 @@ function showItem(id) {
                 jQuery('.stream-tweet, .permalink-tweet').live('hover', function() {
                     var node = jQuery(this).find('.tweet-actions');
                     if (node) {
-                        var permalink = node.siblings('.tweet-timestamp').attr('href').replace('^/#!', 'http://twitter.com');
+                        var permalink = node.siblings('.tweet-timestamp').attr('href').replace(/^\/#\!/, 'http://twitter.com');
                         var tweetClass = ($(this).hasClass('permalink-tweet')) ? 'permalink' : 'stream';
                         if (inArray(tweetClass + ':' + permalink, permalink_memory)) return;
 
@@ -118,6 +118,7 @@ function publitweet_blackbird(tweet) {
     tweet_id = tweet.id_str;
     screen_name = tweet.user.screen_name;
     name = tweet.user.name;
+    user_id = tweet.user.id_str;
     background_url = tweet.user.profile_background_image_url;
     avatar = tweet.user.profile_image_url;
     source = tweet.source;
@@ -141,7 +142,7 @@ function publitweet_blackbird(tweet) {
             text = '#' + a[2];
         } else if (a[3]) {
             url = 'http://twitter.com/' + a[3];
-            pre_text = '@'
+            pre_text = '@';
             text = a[3];
         }
 
