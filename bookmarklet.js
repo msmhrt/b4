@@ -115,6 +115,10 @@ function publitweet_blackbird_getCode(tweet_id) {
 }
 
 function publitweet_blackbird(tweet) {
+    if (tweet.retweeted_status) {
+        tweet = tweet.retweeted_status
+    }
+
     tweet_id = tweet.id_str;
     screen_name = tweet.user.screen_name;
     name = tweet.user.name;
