@@ -37,7 +37,7 @@ function showItem(id) {
                 jQuery('.stream-tweet, .permalink-tweet').live('hover', function() {
                     var node = jQuery(this).find('.tweet-actions');
                     if (node) {
-                        var permalink = node.siblings('.tweet-timestamp').attr('href').replace('^/#!', 'http://twitter.com');
+                        var permalink = node.siblings('.tweet-timestamp').attr('href').replace(/^\/#\!/, 'http://twitter.com');
                         var tweetClass = ($(this).hasClass('permalink-tweet')) ? 'permalink' : 'stream';
                         if (inArray(tweetClass + ':' + permalink, permalink_memory)) return;
 
