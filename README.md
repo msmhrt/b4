@@ -102,3 +102,4 @@ Gist
 [b4kml-gist]: https://gist.github.com/905139
 [takidashimap]: http://goo.gl/hrzU2
 [kyuen-map]: http://kml-layers.appspot.com/kyuen-map/
+[teritori]: https://github.com/msmhrt/teritori
