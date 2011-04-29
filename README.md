@@ -1,3 +1,9 @@
+#THIS PROJECT IS DEPRECATED AND IS NO LONGER BEING MAINTAINED.
+Please see [teritori][teritori]
+
+【警告】このプロジェクトは廃止予定で今後はメンテナンスされません。
+詳細については[teritori][teritori]をご覧ください。
+
 b4
 =============
 
